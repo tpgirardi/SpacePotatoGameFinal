@@ -1,0 +1,144 @@
+import pygame
+from random import randint
+WIDTH = 800
+HEIGHT = 800
+BACKGROUND = (127,0,225)
+
+
+healthp = 100
+healthc = 100
+
+
+
+class Potato:
+  def __init__(self):
+    originalPicture = pygame.image.load("spacepotato.png") 
+    self.speed = [5,0]
+    self.image = pygame.transform.scale(originalPicture, (300,200)) 
+    self.rect = self.image.get_rect() 
+    
+  
+  def update(self):
+      if self.rect.right > HEIGHT:
+        self.speed = [-5,0] 
+      if self.rect.left < 0:
+        self.speed = [5,0]
+      self.move()
+
+  def move(self):
+    self.rect = self.rect.move(self.speed)
+
+class DPotato:
+  def __init__(self):
+    darthPotato = pygame.image.load("darthpotato.png")
+    self.speed = [10,0]
+    self.image = pygame.transform.scale(darthPotato, (300,200)) 
+    self.rect = self.image.get_rect() 
+    
+  
+  def update(self):
+      if self.rect.right > WIDTH:
+        self.speed = [-5,0] 
+      if self.rect.left < 0:
+        self.speed = [5,0]
+      self.move()
+
+  def move(self):
+    self.rect = self.rect.move(self.speed)
+
+
+
+def main():
+  pygame.init()
+  screen = pygame.display.set_mode((WIDTH, HEIGHT)) 
+  clock = pygame.time.Clock() 
+  myPotato = Potato()
+  darthPotato = DPotato()
+  i = 0
+  while i < 30000:
+    
+    screen.fill(BACKGROUND)
+    screen.blit(myPotato.image, myPotato.rect) 
+    myPotato.update()
+    screen.blit(darthPotato.image, darthPotato.rect) 
+    darthPotato.update()
+    pygame.display.flip()
+    i = i + 1
+    if i == 300:
+      break
+    
+  
+
+    clock.tick(60)
+
+def computersmove():
+  global healthc, healthp
+  attack = randint(20,25)
+  heal = randint(10,15)
+  computer = randint(1,2)
+  if computer == 2:
+    healthc = healthc + heal
+    movec =("heal")
+    movea = heal
+  if computer == 1:
+    healthp = healthp - attack
+    movec =("attack")
+    movea = attack
+  print("Darth Potato chose", movec, movea)
+  
+def fight():
+  print("")
+  print("")
+  print("----------------------------------------------------------------------")
+  print("----------------------------------------------------------------------")
+  print("Welcome to Tristan's Space Potato Brawl! Space Potato has been tasked with defeating the     enemy Darth Potato! Space Potato needs your help with this task! Assist Space Potato in his  battle by using the commands attack and heal! GOOD LUCK! ")
+  print("----------------------------------------------------------------------")
+  global healthc, healthp
+  while healthc >= 0 or healthp >= 0:
+    attack = randint(20,25)
+    heal = randint(10,15)
+    if healthc <= 0 or healthp < 0:
+      break
+    move = input("Enter what you want Space Potato to do!: ")
+    print("----------------------------------------------------------------------")
+    if move == "attack":
+      healthc = healthc - attack
+      movec1 =("attack")
+      movea1 = attack
+    if move == "heal":
+      healthp = healthp + heal
+      movec1 =("heal")
+      movea1 = heal
+    print("Space Potato preformed", movec1,movea1)
+    computersmove()
+    print("----------------------------------------------------------------------")
+    print("Space Potatos Health:", healthp)
+    print("Darth Potatos Health:", healthc)
+    main()
+    if healthc <= 0:
+      print("----------------------------------------------------------------------")
+      print("Congratulations Darth Potato was defeated! We are all saved! You win!")
+      print("GAME OVER")
+      print("----------------------------------------------------------------------")
+      break
+    
+    if healthp <= 0:
+      print("----------------------------------------------------------------------")
+      print("Space Potato has fallen, retreat and train again. You lose!")
+      print("GAME OVER")
+      print("----------------------------------------------------------------------")
+      break
+    if healthp and healthc <= 0:
+      print("----------------------------------------------------------------------")
+      print("You both have fallen, the sacrifice of Space Potato has freed Loudounia. You win!")
+      print("GAME OVER")
+      print("----------------------------------------------------------------------")
+      break
+    
+
+while __name__ == "__main__":
+  fight()
+  break
+  
+
+  
